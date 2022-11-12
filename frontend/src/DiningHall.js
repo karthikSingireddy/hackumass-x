@@ -13,6 +13,10 @@ class DiningHall extends React.Component {
         this.canvas = React.createRef();
     }
 
+    componentDidMount() {
+        this.componentDidUpdate(null, null);
+    }
+
     componentDidUpdate(p, c) {
         const ctx = this.canvas.current.getContext('2d');
         ctx.clearRect(0, 0, this.canvas.current.width, this.canvas.current.height);
