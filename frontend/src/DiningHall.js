@@ -22,16 +22,16 @@ class DiningHall extends React.Component {
         ctx.clearRect(0, 0, this.canvas.current.width, this.canvas.current.height);
         switch(this.props.name) {
             case 'worcester':
-                woo.draw(ctx);
+                woo.draw(ctx, this.canvas);
                 break;
             case 'frank':
-                frank.draw(ctx);
+                frank.draw(ctx, this.canvas);
                 break;
             case 'hamp':
-                hamp.draw(ctx);
+                hamp.draw(ctx, this.canvas);
                 break;
             case 'berk':
-                berk.draw(ctx);
+                berk.draw(ctx, this.canvas);
                 break;
             default:
                 break
