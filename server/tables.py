@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 ##import RPi.GPIO as GPIO
 ##import SimpleMFRC522
 
@@ -28,6 +28,18 @@ class DiningHall:
     def __init__(self, name, tables):
         self.name = name
         self.tables = tables
+    
+    def serializeTables(self):
+        output = []
+        for i in range(20):
+            output.append(self.tables[i].serialize())
+        return output
+    
+    def serialize(self):
+        return {
+            'Name': self.name,
+            'Tables': self.serializeTables()
+        }
 
 
 class Table:
@@ -45,6 +57,16 @@ class Table:
 
     def unoccupy(self):
         self.taken = False
+    
+    def serialize(self):
+        return {
+            'Number': self.tableNumber,
+            'Hall': self.diningHall,
+            'x': self.x,
+            'y': self.y,
+            'Width': self.width,
+            'Height': self.height
+        }
 
 
 def genTables(num, name):
@@ -58,30 +80,14 @@ berk = DiningHall("Berkshire", genTables(20, 'Berkshire'))
 frank = DiningHall("Franklin", genTables(20, 'Franklin'))
 hamp = DiningHall("Hampshire", genTables(20, 'Hampshire'))
 
-app = Flask(__name__)
-
-@app.route('/')
+tables = Flask(__name__)
+@tables.route('/')
 def index():
-  return hamp.name
-
-app.run()
-
-"""
-@tables.route('/woo')
-def worcStatus():
-  return 
-
-@tables.route('/berk')
-def berkStatus():
-    return
-
-@tables.route('/frank')
-def frankStatus():
-    return
-
-@tables.route('/hamp')
-def hampStatus():
-    return
+  return {
+        'Worcester-Dining': worc.serialize(),
+        'Berk-Dining': berk.serialize(),
+        'Frank-Dining': frank.serialize(),
+        'Hamp-Dining': hamp.serialize()
+  }
 
 tables.run()
-"""
