@@ -20,7 +20,7 @@ function App() {
               {pages.map((page) => (
                 <Button
                   key={page}
-                  onClick={() => {setDiningHall(page); console.log("state is " + page)}}
+                  onClick={() => {setDiningHall(page)}}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
                   {page}

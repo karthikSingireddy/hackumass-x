@@ -1,22 +1,45 @@
 import React from 'react'
+import berk from './berk';
+import './diningHall.css'
+import frank from './frank';
+import hamp from './hamp';
+import woo from './woo';
 
-function DiningHall(props) {
-    return (
-        <div className='diningHall' onClick={() => {console.log(props.name)}}
-            style={{
-                display: 'flex'
-            }}
-        >
-            <img 
-                src={require("./" + props.name + ".jpg")} 
-                alt="not found"
-                style={{
-                    height: '90vh',
-                    margin: 'auto'
-                }}  
-            />
+class DiningHall extends React.Component {
+    constructor(props) {
+        super(props);
+        console.log(props);
+        this.props = props;
+        this.canvas = React.createRef();
+    }
+
+    componentDidUpdate(p, c) {
+        const ctx = this.canvas.current.getContext('2d');
+        ctx.clearRect(0, 0, this.canvas.current.width, this.canvas.current.height);
+        switch(this.props.name) {
+            case 'worcester':
+                woo.draw(ctx);
+                break;
+            case 'frank':
+                frank.draw(ctx);
+                break;
+            case 'hamp':
+                hamp.draw(ctx);
+                break;
+            case 'berk':
+                berk.draw(ctx);
+                break;
+            default:
+                break
+        }
+    }
+
+    render() {
+        console.log('rendered')
+        return <div className='mapContainer'>
+            <canvas ref={this.canvas}/>
         </div>
-    );
+    }
 }
 
 export default DiningHall;

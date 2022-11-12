@@ -1,0 +1,21 @@
+canvas {
+  /* position: absolute; */
+  /* position: relative; */
+  /* margin: auto; */
+  width: max-content;
+  z-index: 10;
+  height: 90vh;
+
+
+}
+
+.mapContainer {
+  display: flex
+}
+
+img {
+  height: 90vh;
+  margin: auto;
+  /* display: none; */
+  z-index: 1;
+}
