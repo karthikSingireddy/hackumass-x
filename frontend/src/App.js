@@ -1,4 +1,5 @@
 import * as React from 'react';
+import DiningHall from './DiningHall';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,11 +14,11 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
-const pages = ['Worcester', 'Frank', 'Hamp', 'Berk'];
+const pages = ['worcester', 'frank', 'hamp', 'berk'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function App() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = React.useState("worcester");
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [diningHall, setDiningHall] = React.useState(null);
 
@@ -38,23 +39,26 @@ function App() {
   };
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={() => {setDiningHall(page); console.log("state is " + page)}}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+    <>
+      <AppBar position="static">
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+              {pages.map((page) => (
+                <Button
+                  key={page}
+                  onClick={() => {setDiningHall(page); console.log("state is " + page)}}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  {page}
+                </Button>
+              ))}
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+      <DiningHall name={diningHall}></DiningHall>
+    </>
   );
 }
 export default App;
