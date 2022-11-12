@@ -9,11 +9,11 @@ function DiningHall(props) {
         >
             <img 
                 src={require("./" + props.name + ".jpg")} 
-                // alt="image not found"
+                alt="not found"
                 style={{
                     height: '90vh',
                     margin: 'auto'
-                }}
+                }}  
             />
         </div>
     );
