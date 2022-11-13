@@ -3,8 +3,6 @@ from datetime import datetime
 import time
 import math
 
-epoch_time = datetime(1970, 1, 1)
-
 def validateCard(num):
     return str(num)[0:8] == "21206600"
 
@@ -19,7 +17,7 @@ while True:
         data = json.load(jsonFile)
     data["Tables"][tableNum]["Taken"] = occupying
     if occupying:
-        data["Tables"][tableNum]["Time"] = math.floor((datetime.now() - epoch_time).total_seconds() * (10**3))
+        data["Tables"][tableNum]["Time"] = int(time.time() * 1000)
     else:
         data["Tables"][tableNum]["Time"] = 0
     with open(diningHall + ".json", "w") as jsonFile:
