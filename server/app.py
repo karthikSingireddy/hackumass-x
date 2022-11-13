@@ -1,9 +1,9 @@
-from flask import Flask
+def validateCard(num):
+    return str(num)[0:8] == "21206600"
 
-app = Flask(__name__)
-
-@app.route('/')
-def index():
-  return ''
-
-app.run()
+while True:
+  num = input("Scan your card: ")
+  if validateCard(num):
+    print("You are from UMass!")
+  else:
+    print("who tf r u b?")

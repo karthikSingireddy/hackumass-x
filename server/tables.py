@@ -6,9 +6,6 @@ from flask_cors import CORS
 tables = Flask(__name__)
 CORS(tables)
 
-def validateCard(num):
-    return str(num)[0:8] == "21206600"
-
 class DiningHall:
 
     def __init__(self, data):
@@ -76,46 +73,42 @@ class Table:
             'taken': self.taken,
             'time': self.startTime
         }
-
-worc = open('worcester.json')
-berk = open('berkshire.json')
-frank = open('franklin.json')
-hamp = open('hampshire.json')
-jsonArr = [json.load(worc), json.load(berk), json.load(frank), json.load(hamp)] 
-worc = DiningHall(jsonArr[0])
-berk = DiningHall(jsonArr[1])
-frank = DiningHall(jsonArr[2])
-hamp = DiningHall(jsonArr[3])
-
-
-curFileSeek = 0
-# while True:
-    # print
-    # inFile = open('./cardData', 'r')
-    # inFile.seek(curFileSeek)
-    # data = inFile.read()
-    # curFileSeek = inFile.tell()
-    # inFile.close()
-    # time.sleep(10)
-
-
+        
 @tables.route('/worcester')
 def Worcester():
-  response = jsonify(DiningHall(json.load(open('worcester.json'))).serialize())
-  return response
+  return jsonify(DiningHall(json.load(open('worcester.json'))).serialize())
 
 @tables.route('/berk')
 def Berkshire():
-    response = jsonify(DiningHall(json.load(open('berkshire.json'))).serialize())
-    return response
-
+    return jsonify(DiningHall(json.load(open('berkshire.json'))).serialize())
+    
 @tables.route('/frank')
 def Franklin():
-    response = jsonify(DiningHall(json.load(open('franklin.json'))).serialize())
-    return response
+    return jsonify(DiningHall(json.load(open('franklin.json'))).serialize())
 
 @tables.route('/hamp')
 def Hampshire():
     response = jsonify(DiningHall(json.load(open('hampshire.json'))).serialize())
     return response
+
+@tables.route('/<loc>/<int:table>')
+def update(loc, table):
+    dh = None
+    if loc == 'worcester':
+        dh = worc
+    elif loc == 'hamp':
+        dh = hamp
+    elif loc == 'frank':
+        dh = frank
+    elif loc == 'berk':
+        dh = berk
+    else:
+        return 'Failed'
+    
+    for x in dh.tables:
+        if x.tableNumber == table:
+            x.taken = True
+            return 'Success'
+
 tables.run()
+
