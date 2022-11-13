@@ -113,4 +113,24 @@ def Franklin():
 def Hampshire():
     response = jsonify(DiningHall(json.load(open('hampshire.json'))).serialize())
     return response
+
+@tables.route('/<loc>/<int:table>')
+def update(loc, table):
+    dh = None
+    if loc == 'worcester':
+        dh = worc
+    elif loc == 'hamp':
+        dh = hamp
+    elif loc == 'frank':
+        dh = frank
+    elif loc == 'berk':
+        dh = berk
+    else:
+        return 'Failed'
+    
+    for x in dh.tables:
+        if x.tableNumber == table:
+            x.taken = True
+            return 'Success'
+
 tables.run()
