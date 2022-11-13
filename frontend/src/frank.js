@@ -1,5 +1,5 @@
 function draw(ctx, canvas) {
-  ctx.fill = "#FFFFFF";
+  ctx.fillStyle = "#000000";
   ctx.fillRect(0, 0, 20, 30);
 }
 
