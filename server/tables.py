@@ -2,8 +2,9 @@ from flask import Flask, render_template, jsonify
 import json
 from datetime import datetime
 import time
-
+from flask_cors import CORS
 tables = Flask(__name__)
+CORS(tables)
 
 class DiningHall:
 
@@ -26,8 +27,8 @@ class DiningHall:
     
     def serialize(self):
         return {
-            'Name': self.name,
-            'Tables': self.serializeTables()
+            'name': self.name,
+            'tables': self.serializeTables()
         }
 
 class Table:  
@@ -63,13 +64,13 @@ class Table:
  
     def serialize(self):
         return {
-            'Number': self.tableNumber,
+            'number': self.tableNumber,
             'x': self.x,
             'y': self.y,
-            'Width': self.width,
-            'Height': self.height,
-            'Taken': self.taken,
-            'Time': self.startTime
+            'width': self.width,
+            'height': self.height,
+            'taken': self.taken,
+            'time': self.startTime
         }
 
 woo = open('worcester.json')
@@ -83,29 +84,30 @@ frank = DiningHall(jsonArr[2])
 hamp = DiningHall(jsonArr[3])
 
 curFileSeek = 0
-while True:
-    print
-    inFile = open('./cardData', 'r')
-    inFile.seek(curFileSeek)
-    data = inFile.read()
-    curFileSeek = inFile.tell()
-    inFile.close()
-    time.sleep(10)
+# while True:
+    # print
+    # inFile = open('./cardData', 'r')
+    # inFile.seek(curFileSeek)
+    # data = inFile.read()
+    # curFileSeek = inFile.tell()
+    # inFile.close()
+    # time.sleep(10)
 
 
-@tables.route('/Worcester')
+@tables.route('/worcester')
 def Worcester():
-  return worc.serialize()
+  response = jsonify(DiningHall(json.load(open('worcester.json'))).serialize())
+  return response
 
-@tables.route('/Berkshire')
+@tables.route('/berk')
 def Berkshire():
     return berk.serialize()
 
-@tables.route('/Franklin')
+@tables.route('/frank')
 def Franklin():
     return frank.serialize()
 
-@tables.route('/Hampshire')
+@tables.route('/hamp')
 def Hampshire():
     return hamp.serialize()
 tables.run()

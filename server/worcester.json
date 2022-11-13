@@ -2,12 +2,12 @@
       "Name": "Worcester", 
       "Tables": [
         {
-          "Height": 0, 
+          "Height": 20, 
           "Number": 0, 
           "Taken": false, 
           "Time": "00:00", 
-          "Width": 0, 
-          "x": 0, 
+          "Width": 10, 
+          "x": 10, 
           "y": 0
         }, 
         {

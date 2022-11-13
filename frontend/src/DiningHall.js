@@ -13,11 +13,23 @@ class DiningHall extends React.Component {
         this.canvas = React.createRef();
     }
 
+    loadData() {
+        const t = this;
+        fetch(`http://localhost:5000/${this.props.name}`)
+            .then(d => d.json())
+            .then(data => {
+                data.tables.forEach(table => {
+                    t.drawTable(table.x, table.y, table.width, table.height, table.taken);
+                })
+            });
+    }
+
     componentDidMount() {
         this.componentDidUpdate(null, null);
     }
 
     componentDidUpdate(p, c) {
+        this.loadData();
         const ctx = this.canvas.current.getContext('2d');
         ctx.clearRect(0, 0, this.canvas.current.width, this.canvas.current.height);
         switch(this.props.name) {
@@ -40,6 +52,7 @@ class DiningHall extends React.Component {
     }
 
     drawTable(x, y, width, height, taken) {
+        console.log('draw table')
         const canvas = this.canvas.current;
         const ctx = canvas.getContext('2d');
         const color = taken ? '#FF0000' : '#00FF00';
