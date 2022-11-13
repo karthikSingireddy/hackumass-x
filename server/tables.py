@@ -1,37 +1,26 @@
 from flask import Flask, render_template, jsonify
-##import RPi.GPIO as GPIO
-##import SimpleMFRC522
+import json
+from datetime import datetime
+import time
 
 tables = Flask(__name__)
 
-class Observerable:
-
-    def _init_(self):
-        self.observers = []
-
-    def notify(self, modifier = None):
-        for observer in self.observers:
-            if modifier != observer:
-                observer.update(self)
-
-    def attach(self, observer):
-        if observer not in self.observers:
-            self.observers.append(observer)
-    
-    def detach(self, observer):
-        try:
-            self.observers.remove(observer)
-        except ValueError:
-            pass
-
 class DiningHall:
-    def __init__(self, name, tables):
-        self.name = name
-        self.tables = tables
+
+    def __init__(self, json):
+        self.name = "Undefined"
+        self.json = json
+        self.tables = []
+        self.convertData()
     
+    def convertData(self):
+        self.name = self.json["Name"]
+        for i in self.json["Tables"]:
+            self.tables.append(Table(i))
+
     def serializeTables(self):
         output = []
-        for i in range(20):
+        for i in range(len(self.tables)):
             output.append(self.tables[i].serialize())
         return output
     
@@ -41,53 +30,82 @@ class DiningHall:
             'Tables': self.serializeTables()
         }
 
+class Table:  
 
-class Table:
-    def __init__(self, tableNumber, diningHall, x, y, height, width):
-        self.tableNumber = tableNumber
-        self.diningHall = diningHall
+    def __init__(self, data):
+        self.tableNumber = 0
         self.taken = False
-        self.x = x
-        self.y = y
-        self.height = height
-        self.width = width
+        self.x = 0
+        self.y = 0
+        self.height = 0
+        self.width = 0
+        self.startTime = "00:00"
+        self.data = data
+        self.convertData()
     
     def occupy(self):
         self.taken = True
 
     def unoccupy(self):
         self.taken = False
-    
+
+    def setTime(self, time):
+        self.startTime = time
+
+    def convertData(self):
+        self.tableNumber = self.data["Number"]
+        self.taken = self.data["Taken"]
+        self.x = self.data["x"]
+        self.y = self.data["y"]
+        self.width = self.data["Width"]
+        self.height = self.data["Height"]
+        self.startTime = self.data["Time"]
+ 
     def serialize(self):
         return {
             'Number': self.tableNumber,
-            'Hall': self.diningHall,
             'x': self.x,
             'y': self.y,
             'Width': self.width,
-            'Height': self.height
+            'Height': self.height,
+            'Taken': self.taken,
+            'Time': self.startTime
         }
 
+woo = open('worcester.json')
+berk = open('berkshire.json')
+frank = open('franklin.json')
+hamp = open('hampshire.json')
+jsonArr = [json.load(woo), json.load(berk), json.load(frank), json.load(hamp)] 
+worc = DiningHall(jsonArr[0])
+berk = DiningHall(jsonArr[1])
+frank = DiningHall(jsonArr[2])
+hamp = DiningHall(jsonArr[3])
 
-def genTables(num, name):
-    tables = []
-    for i in range(num):
-        tables.append(Table(i, name, 0, 0, 0, 0))
-    return tables
+curFileSeek = 0
+while True:
+    print
+    inFile = open('./cardData', 'r')
+    inFile.seek(curFileSeek)
+    data = inFile.read()
+    curFileSeek = inFile.tell()
+    inFile.close()
+    time.sleep(10)
 
-worc = DiningHall("Worcester", genTables(20, 'Worcester'))
-berk = DiningHall("Berkshire", genTables(20, 'Berkshire'))
-frank = DiningHall("Franklin", genTables(20, 'Franklin'))
-hamp = DiningHall("Hampshire", genTables(20, 'Hampshire'))
 
-tables = Flask(__name__)
-@tables.route('/')
-def index():
-  return {
-        'Worcester-Dining': worc.serialize(),
-        'Berk-Dining': berk.serialize(),
-        'Frank-Dining': frank.serialize(),
-        'Hamp-Dining': hamp.serialize()
-  }
+@tables.route('/Worcester')
+def Worcester():
+  return worc.serialize()
 
+@tables.route('/Berkshire')
+def Berkshire():
+    return berk.serialize()
+
+@tables.route('/Franklin')
+def Franklin():
+    return frank.serialize()
+
+@tables.route('/Hampshire')
+def Hampshire():
+    return hamp.serialize()
 tables.run()
