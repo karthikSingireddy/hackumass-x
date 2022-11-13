@@ -26,13 +26,13 @@ class DiningHall extends React.Component {
                 this.drawTable(30, 30, 20, 20, !false);
                 break;
             case 'frank':
-                frank.draw(ctx, this.canvas);
+                frank.draw(ctx, this.canvas.current);
                 break;
             case 'hamp':
-                hamp.draw(ctx, this.canvas);
+                hamp.draw(ctx, this.canvas.current);
                 break;
             case 'berk':
-                berk.draw(ctx, this.canvas);
+                berk.draw(ctx, this.canvas.current);
                 break;
             default:
                 break
