@@ -26,8 +26,10 @@ class DiningHall extends React.Component {
                     let elapsed = Date.now() - table.time;
                     console.log("table.time is " + table.time);
                     console.log("elapsed is: " + elapsed);
-                    let sec = Math.ceil((elapsed / 1000)) % 60;
-                    let min = Math.ceil((elapsed) / (1000 * 60));
+                    let sec = Math.floor((elapsed / 1000)) % 60;
+                    sec = sec < 10 ? "0" + sec : sec; 
+                    let min = Math.floor((elapsed) / (1000 * 60));
+                    min = min < 10 ? "0" + min : min;
                     //console.log(Date.now());
                     t.drawTable(table.x, table.y, table.width, table.height, table.taken, min + ":" + sec);
                 })
