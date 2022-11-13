@@ -11,6 +11,7 @@ class DiningHall extends React.Component {
         console.log(props);
         this.props = props;
         this.canvas = React.createRef();
+        this.state = { t: 0 };
     }
 
     loadData() {
@@ -18,6 +19,7 @@ class DiningHall extends React.Component {
         fetch(`http://localhost:5000/${this.props.name}`)
             .then(d => d.json())
             .then(data => {
+                t.refresh();
                 data.tables.forEach(table => {
                     t.drawTable(table.x, table.y, table.width, table.height, table.taken);
                 })
@@ -26,16 +28,24 @@ class DiningHall extends React.Component {
 
     componentDidMount() {
         this.componentDidUpdate(null, null);
+        this.interval = setInterval(() => this.setState({ t: Date.now()}), 1000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     componentDidUpdate(p, c) {
+        console.log(p, c);
         this.loadData();
+    }
+
+    refresh() {
         const ctx = this.canvas.current.getContext('2d');
         ctx.clearRect(0, 0, this.canvas.current.width, this.canvas.current.height);
         switch(this.props.name) {
             case 'worcester':
                 woo.draw(ctx, this.canvas);
-                this.drawTable(30, 30, 20, 20, !false);
                 break;
             case 'frank':
                 frank.draw(ctx, this.canvas.current);
