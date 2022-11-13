@@ -77,18 +77,7 @@ class Table:
             'time': self.startTime
         }
 
-worc = open('worcester.json')
-berk = open('berkshire.json')
-frank = open('franklin.json')
-hamp = open('hampshire.json')
-jsonArr = [json.load(worc), json.load(berk), json.load(frank), json.load(hamp)] 
-worc = DiningHall(jsonArr[0])
-berk = DiningHall(jsonArr[1])
-frank = DiningHall(jsonArr[2])
-hamp = DiningHall(jsonArr[3])
-
-
-curFileSeek = 0
+# curFileSeek = 0
 # while True:
     # print
     # inFile = open('./cardData', 'r')
@@ -101,21 +90,17 @@ curFileSeek = 0
 
 @tables.route('/worcester')
 def Worcester():
-  response = jsonify(DiningHall(json.load(open('worcester.json'))).serialize())
-  return response
+  return jsonify(DiningHall(json.load(open('worcester.json'))).serialize())
 
 @tables.route('/berk')
 def Berkshire():
-    response = jsonify(DiningHall(json.load(open('berkshire.json'))).serialize())
-    return response
-
+    return jsonify(DiningHall(json.load(open('berkshire.json'))).serialize())
+    
 @tables.route('/frank')
 def Franklin():
-    response = jsonify(DiningHall(json.load(open('franklin.json'))).serialize())
-    return response
+    return jsonify(DiningHall(json.load(open('franklin.json'))).serialize())
 
 @tables.route('/hamp')
 def Hampshire():
-    response = jsonify(DiningHall(json.load(open('hampshire.json'))).serialize())
-    return response
+    return jsonify(DiningHall(json.load(open('hampshire.json'))).serialize())
 tables.run()
