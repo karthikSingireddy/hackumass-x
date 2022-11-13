@@ -23,6 +23,7 @@ class DiningHall extends React.Component {
         switch(this.props.name) {
             case 'worcester':
                 woo.draw(ctx, this.canvas);
+                this.drawTable(30, 30, 20, 20, !false);
                 break;
             case 'frank':
                 frank.draw(ctx, this.canvas);
@@ -38,8 +39,17 @@ class DiningHall extends React.Component {
         }
     }
 
+    drawTable(x, y, width, height, taken) {
+        const canvas = this.canvas.current;
+        const ctx = canvas.getContext('2d');
+        const color = taken ? '#FF0000' : '#00FF00';
+
+        ctx.fillStyle = color;
+        ctx.fillRect(x, y, width, height);
+    }
+
     render() {
-        console.log('rendered')
+        console.log(this.props.name);
         return <div className='mapContainer'>
             <canvas ref={this.canvas}/>
         </div>
