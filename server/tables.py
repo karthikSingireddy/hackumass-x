@@ -6,9 +6,6 @@ from flask_cors import CORS
 tables = Flask(__name__)
 CORS(tables)
 
-def validateCard(num):
-    return str(num)[0:8] == "21206600"
-
 class DiningHall:
 
     def __init__(self, data):
@@ -114,3 +111,4 @@ def update(loc, table):
             return 'Success'
 
 tables.run()
+
