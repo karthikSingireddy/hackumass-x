@@ -76,18 +76,7 @@ class Table:
             'taken': self.taken,
             'time': self.startTime
         }
-
-# curFileSeek = 0
-# while True:
-    # print
-    # inFile = open('./cardData', 'r')
-    # inFile.seek(curFileSeek)
-    # data = inFile.read()
-    # curFileSeek = inFile.tell()
-    # inFile.close()
-    # time.sleep(10)
-
-
+        
 @tables.route('/worcester')
 def Worcester():
   return jsonify(DiningHall(json.load(open('worcester.json'))).serialize())
@@ -102,5 +91,26 @@ def Franklin():
 
 @tables.route('/hamp')
 def Hampshire():
-    return jsonify(DiningHall(json.load(open('hampshire.json'))).serialize())
+    response = jsonify(DiningHall(json.load(open('hampshire.json'))).serialize())
+    return response
+
+@tables.route('/<loc>/<int:table>')
+def update(loc, table):
+    dh = None
+    if loc == 'worcester':
+        dh = worc
+    elif loc == 'hamp':
+        dh = hamp
+    elif loc == 'frank':
+        dh = frank
+    elif loc == 'berk':
+        dh = berk
+    else:
+        return 'Failed'
+    
+    for x in dh.tables:
+        if x.tableNumber == table:
+            x.taken = True
+            return 'Success'
+
 tables.run()
