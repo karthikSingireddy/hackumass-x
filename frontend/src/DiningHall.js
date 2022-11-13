@@ -46,7 +46,6 @@ class DiningHall extends React.Component {
         switch(this.props.name) {
             case 'worcester':
                 woo.draw(ctx, this.canvas);
-                this.drawTable(30, 30, 20, 20, !false);
                 break;
             case 'frank':
                 frank.draw(ctx, this.canvas.current);
