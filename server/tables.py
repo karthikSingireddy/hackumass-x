@@ -101,7 +101,8 @@ def Worcester():
 
 @tables.route('/berk')
 def Berkshire():
-    return berk.serialize()
+    response = jsonify(DiningHall(json.load(open('berkshire.json'))).serialize())
+    return response
 
 @tables.route('/frank')
 def Franklin():
@@ -110,4 +111,5 @@ def Franklin():
 @tables.route('/hamp')
 def Hampshire():
     return hamp.serialize()
+
 tables.run()

@@ -2,13 +2,13 @@
     "Name": "Berkshire", 
     "Tables": [
       {
-        "Height": 0, 
         "Number": 0, 
         "Taken": false, 
         "Time": "00:00", 
-        "Width": 0, 
-        "x": 0, 
-        "y": 0
+        "Width": 15,
+        "Height": 15,  
+        "x": 30, 
+        "y": 30
       }, 
       {
         "Height": 0, 
