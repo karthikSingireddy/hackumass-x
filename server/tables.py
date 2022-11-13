@@ -5,18 +5,25 @@ import time
 
 tables = Flask(__name__)
 
+def validateCard(num):
+    return str(num)[0:8] == "21206600"
+
 class DiningHall:
 
-    def __init__(self, json):
+    def __init__(self, data):
         self.name = "Undefined"
-        self.json = json
+        self.data = data
         self.tables = []
         self.convertData()
     
     def convertData(self):
-        self.name = self.json["Name"]
-        for i in self.json["Tables"]:
+        self.name = self.data["Name"]
+        for i in self.data["Tables"]:
             self.tables.append(Table(i))
+    
+    def updateTable(self, num):
+        self.tables[num].changeOccupancy()
+        self.tables[num].setTime(datetime.now().strftime("%H:%M:%S"))
 
     def serializeTables(self):
         output = []
@@ -39,15 +46,12 @@ class Table:
         self.y = 0
         self.height = 0
         self.width = 0
-        self.startTime = "00:00"
+        self.startTime = "00:00:00"
         self.data = data
         self.convertData()
     
-    def occupy(self):
-        self.taken = True
-
-    def unoccupy(self):
-        self.taken = False
+    def changeOccupancy(self):
+        self.taken = not (self.taken)
 
     def setTime(self, time):
         self.startTime = time
@@ -72,26 +76,27 @@ class Table:
             'Time': self.startTime
         }
 
-woo = open('worcester.json')
+worc = open('worcester.json')
 berk = open('berkshire.json')
 frank = open('franklin.json')
 hamp = open('hampshire.json')
-jsonArr = [json.load(woo), json.load(berk), json.load(frank), json.load(hamp)] 
+jsonArr = [json.load(worc), json.load(berk), json.load(frank), json.load(hamp)] 
 worc = DiningHall(jsonArr[0])
 berk = DiningHall(jsonArr[1])
 frank = DiningHall(jsonArr[2])
 hamp = DiningHall(jsonArr[3])
 
+'''
 curFileSeek = 0
-while True:
-    print
+while curFileSeek <= 16:
     inFile = open('./cardData', 'r')
     inFile.seek(curFileSeek)
-    data = inFile.read()
+    cardNum = int(inFile.readline())
+    if (validateCard(cardNum)):
+        worc.updateTable(cardNum % 20)
     curFileSeek = inFile.tell()
     inFile.close()
-    time.sleep(10)
-
+'''
 
 @tables.route('/Worcester')
 def Worcester():
@@ -108,4 +113,5 @@ def Franklin():
 @tables.route('/Hampshire')
 def Hampshire():
     return hamp.serialize()
+
 tables.run()
