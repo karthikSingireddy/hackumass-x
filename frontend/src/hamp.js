@@ -1,6 +1,6 @@
 function draw(ctx, canvas) {
   console.log('hamp')
-  ctx.fillStyle = "#FFFFFF";
+  ctx.fillStyle = "#000000";
   ctx.fillRect(60, 10, 180, 2);
   //ctx.fillRect(20, 20, 2, 100);
   //ctx.fillRect(130, 140, 142, 2);
